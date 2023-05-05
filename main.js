@@ -14,11 +14,11 @@ import {
   MeshBasicMaterial,
   TextureLoader,
   MeshStandardMaterial,
-} from "../../third_party/three.module.js";
-import * as THREE from "../../third_party/three.module.js";
-import { FaceMeshFaceGeometry } from "../../js/face.js";
-import { OrbitControls } from "../../third_party/OrbitControls.js";
-// import { STLLoader } from "../../third_party/STLLoader.js";
+} from "./third_party/three.module.js";
+import * as THREE from "./third_party/three.module.js";
+import { FaceMeshFaceGeometry } from "./js/face.js";
+import { OrbitControls } from "./third_party/OrbitControls.js";
+// import { STLLoader } from "./third_party/STLLoader.js";
 import { STLLoader } from 'https://cdn.jsdelivr.net/npm/three@0.120.1/examples/jsm/loaders/STLLoader.js';
 const av = document.querySelector("gum-av");
 const canvas = document.querySelector("canvas");
@@ -86,7 +86,7 @@ scene.add(hemiLight);
 const ambientLight = new AmbientLight(0x404040, 0.25);
 scene.add(ambientLight);
 
-loader.load( "../../assets/gm.stl",
+loader.load( "./assets/gm.stl",
               (geometry) => {
                 const material = new MeshStandardMaterial({ color: 0xffc0cb });
                 const mesh = new Mesh(geometry, material);
