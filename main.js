@@ -86,19 +86,16 @@ scene.add(hemiLight);
 const ambientLight = new AmbientLight(0x404040, 0.25);
 scene.add(ambientLight);
 
-loader.load( "./assets/gm.stl",
-              (geometry) => {
-                const material = new MeshStandardMaterial({ color: 0xffc0cb });
-                const mesh = new Mesh(geometry, material);
-                geometry.center()
-                // Set the initial scale and rotation
-                // mesh.scale.set(0.002, 0.002, 0.002);
-                // mesh.rotation.x = -Math.PI / 2;
-                // mesh.position.set(0, 0, -1);
-                brain = mesh
-                scene.add(brain);
-              });
-console.log('Mesh loaded!')
+let brainLoaded = new Promise((resolve, reject) => {
+  loader.load("./assets/gm.stl", (geometry) => {
+    const material = new MeshStandardMaterial({ color: 0xffc0cb });
+    const mesh = new Mesh(geometry, material);
+    geometry.center();
+    brain = mesh;
+    scene.add(brain);
+    resolve();
+  }, undefined, reject);
+});
 
 // Defines if the source should be flipped horizontally.
 let flipCamera = true;
@@ -135,12 +132,12 @@ async function render(model) {
   if (faces.length > 0) {
     // Update face mesh geometry with new data.
     faceGeometry.update(faces[0], flipCamera);
-
-    // Modify brain position and orientation.
-    const track = faceGeometry.track(9, 55, 285);
-    brain.position.set(track.position.x, track.position.y, track.position.z);
-    brain.rotation.setFromRotationMatrix(track.rotation);
-    brain.rotation.x = -Math.PI / 2;
+    if (brain) {
+      const track = faceGeometry.track(9, 55, 285);
+      brain.position.set(track.position.x, track.position.y, track.position.z);
+      brain.rotation.setFromRotationMatrix(track.rotation);
+      brain.rotation.x = -Math.PI / 2;
+    }
   }
 
     // Render the scene normally.
